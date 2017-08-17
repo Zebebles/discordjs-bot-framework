@@ -10,6 +10,8 @@ module.exports = function(){
         
         msg.client.Commands.forEach(cmd => {
             if(cmd.areYou(command)){
+                if(cmd.OwnerOnly && (msg.author.id != msg.client.Author)) return;
+                if(cmd.GuildOnly && msg.channel.type != "text") return;
                 cmd.run(msg);
             }
         });

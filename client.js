@@ -1,4 +1,5 @@
 const {Client} = require("discord.js"); 
+const Discord = require("discord.js");
 const fs = require("fs");
 const path = require('path');
 require("./msgHandler.js")();
@@ -65,23 +66,29 @@ class DBFClient extends Client{
         super.login(this.token+"");
     }
 
-    getHelp(){
+    getHelp(message){
+        let helpEmbed = new Discord.RichEmbed();
+        helpEmbed.setColor([127, 161, 216]);
         let groups = [];
         let cmds = this.Commands;
         cmds.forEach(cmd => {
             let group = groups.filter(group => group == cmd.Group);
             if(group.length == 0) groups.push(cmd.Group);
         });
-        let helpMsg = "";
+        let helpMsg;
         groups.forEach(group => {
-                helpMsg += "\n\n**" + group + "**"; 
-                let groupCommands = cmds.filter(cmd =>group == cmd.group);
+                helpMsg = "\n";
+                let groupCommands = cmds.filter(cmd => {
+                    if(group == cmd.Group) return cmd;
+                });
                 groupCommands.forEach(command =>{
-                helpMsg += "\n\t**" + command.Trigger + "** : *" + command.Description + "*"; 
-            });
+                     if(command.OwnerOnly && (message.author.id != message.client.Author));
+                     else helpMsg += "\n\n**" + command.Triggers[0] + "** : *" + command.Description + "*"; 
+                });
+            helpEmbed.addField(group, helpMsg);
         });
 
-        return helpMsg;
+        return helpEmbed;
     }
 }
 

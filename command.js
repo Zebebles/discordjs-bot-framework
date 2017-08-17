@@ -4,9 +4,11 @@ class Command{
         triggers: triggers,
         description: description,
         group: group,
-        guildOnly: guildOnly
+        guildOnly: guildOnly,
+        ownerOnly: ownerOnly
     }) {
         this._name = obj.name;
+        this.ownerOnly = obj.ownerOnly;
         if (obj.group)  this._group = obj.group;
         if (!obj.triggers) throw Error("Must define a trigger");
         else  this._triggers = obj.triggers;
@@ -17,8 +19,11 @@ class Command{
     get Name() { return this._name;  }
     set Name(value) { this._name = value; }
 
-    get Triggers() { return this._trigger; }
-    set Triggers(value) { this._trigger = value; }
+    get Triggers() { return this._triggers; }
+    set Triggers(value) { this._triggers = value; }
+
+    get OwnerOnly(){return this.ownerOnly;}
+    set OwnerOnly(value){this.ownerOnly = value;}
 
     get GuildOnly() { return this._guildOnly; }
     set GuildOnly(value) {this._guildOnly = value; }
