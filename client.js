@@ -22,18 +22,21 @@ class DBFClient extends Client{
         if(!options.cmddir) throw Error("You must specify a command directory"); 
         else this.commandsdir = options.cmddir;
 
+        this._MentionsTrigger = options.MentionsTrigger;
+
         this.commands = new Array();
 
         this.on("message", msg => {
             let prefix = msg.client.Prefix;
             if(msg.content.substring(0, prefix.length) != prefix && !msg.isMentioned(msg.client.user)) return;
             let command;
-            if(msg.isMentioned(msg.client.user)) command = msg.content.split(" ")[1];
+            if(msg.isMentioned(msg.client.user) && this.MentionsTrigger) command = msg.content.split(" ")[1];
             else command = msg.content.split(" ")[0];
+            if(command.match("<&")) return;
             if(command) command = command.replace(prefix, "");
             else return;
             msg.client.Commands.forEach(cmd => {
-                if(cmd.areYou(command)){
+                if(cmd.areYou(command.toLowerCase())){
                     if(cmd.OwnerOnly && (msg.author.id != msg.client.Author)) return;
                     if(cmd.GuildOnly && msg.channel.type != "text") return;
                     cmd.run(msg);
@@ -50,6 +53,8 @@ class DBFClient extends Client{
 
     get Prefix() { return this.prefix; }
     set Prefix(value) { this.prefix = value; }
+
+    get MentionsTrigger(){return this._MentionsTrigger;}
 
     get Name() { return this.name; }
     set Name(value) { this.name = value; }

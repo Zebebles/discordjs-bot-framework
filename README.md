@@ -38,6 +38,7 @@ module.exports = class Hello extends DBF.Command{
              ownerOnly : true, //if this command is to be used by the bot creator only.
              description: "sends hello in the channel", //this will show in the help message
              guildOnly : true //any command that refers to a guild with the discord.js library will crash if it triggered in a dm channel.  This prevents that.
+	     MentionsTrigger: true //if this is true, @mentions followed by commands will trigger said command.
         });
     }
 
@@ -65,6 +66,8 @@ module.exports = class Hello extends DBF.Command{
 `Client.getHelp(message)` : gets a help message based on your command triggers and descriptions.
 
 `Client.Commands` : gets an array of commands from the client, array of Commands.
+
+`Client.MentionsTrigger` : if @mentioning the client, followed by a command will trigger the command.  Boolean
 
 `Command.run(message)` : runs the command (this is done automatically by the framework when one of the triggers is sent in a message.
 
