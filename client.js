@@ -30,9 +30,9 @@ class DBFClient extends Client{
             let prefix = msg.client.Prefix;
             if(msg.content.substring(0, prefix.length) != prefix && !msg.isMentioned(msg.client.user)) return;
             let command;
-            if(msg.isMentioned(msg.client.user) && this.MentionsTrigger) command = msg.content.split(" ")[1];
+            if((msg.mentions.users.first() && msg.mentions.users.first().id == msg.client.user.id) && (msg.content.substring(0,2) == "<@") && this.MentionsTrigger) command = msg.content.split(" ")[1];
+            else if(msg.mentions.users.first() && (msg.mentions.users.first().id == msg.client.user.id) && !this.MentionsTrigger) return;
             else command = msg.content.split(" ")[0];
-            if(command.match("<&")) return;
             if(command) command = command.replace(prefix, "");
             else return;
             msg.client.Commands.forEach(cmd => {
@@ -108,6 +108,38 @@ class DBFClient extends Client{
         });
 
         return helpEmbed;
+    }
+
+    findUser(msg){
+        var foundUser;
+        var countClientMentions;
+        if (msg.mentions.users.first() && (msg.mentions.users.first().id == this.user.id && msg.mentions.users.array().length > 1)){ //if 
+            msg.mentions.users.array().forEach(user =>{
+                if(user.id !== this.user.id) foundUser = user;
+            });
+        }else if (msg.mentions.users.first() && (msg.mentions.users.first().id == this.user.id)){
+            let reg = new RegExp(/.[^ ]*[ ].[^ ]*[ ].[^ ]*/);
+            if (msg.content.substring(0,2) != "<@") return this.user;
+            if(!reg.test(msg.content)) return console.log("didn't meet regex");
+            let botmentions = 0;
+            msg.content.split(" ").forEach(word => {
+                if(word.replace(/[<>@]/g, "") == this.user.id) botmentions++;
+            });
+            if(botmentions > 1) foundUser = this.user;
+            else{
+                foundUser = msg.guild.members.find(mem => mem.user.username.toLowerCase() == msg.content.split(" ")[2].toLowerCase());
+                if (foundUser) foundUser = foundUser.user;
+            }
+        }else if (msg.mentions.users.first()){
+            foundUser = msg.mentions.users.first();
+        }else{
+            var uname = msg.content.toLowerCase();
+            let reg = new RegExp(/.[^ ]*[ ].[^ ]*/);
+            if(!reg.test(uname)) return;
+            uname = uname.split(" ")[1];
+            foundUser = msg.guild.members.find(mem => mem.user.username.toLowerCase() === uname);
+        }
+        return foundUser;
     }
 }
 
