@@ -49,12 +49,12 @@ module.exports = class Hello extends DBF.Command{
 
 ```
 
-### methods and properties
+### Methods and Properties
 
  ***(note: all of the methods/properties attatched to client can be called from anything that links to client in the discord.js library)***
 
 `Client.Prefix`: The bots prefix.
-`Client.Name` : The bots name.
+\n`Client.Name` : The bots name.
 `Client.Author[read only]` : The authors discord ID, string.
 `Client.Token[read only]` : The clients token used to log in, string.
 `Client.CommandsDir` : The commands directory, string.
