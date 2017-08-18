@@ -21,9 +21,8 @@ cmddir: require('path').join(__dirname, 'commands'), //this is the directory of 
 token: "your_token_here" //this is your bots token.  It is used to log in as the client, and hence, should not be shared.
 });
 
-\t\t\tTestBot.login();
+TestBot.login();
 
-\t\t
 ```
 
 ### An example command file
