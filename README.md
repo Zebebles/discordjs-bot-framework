@@ -54,19 +54,33 @@ module.exports = class Hello extends DBF.Command{
  ***(note: all of the methods/properties attatched to client can be called from anything that links to client in the discord.js library)***
 
 `Client.Prefix`: The bots prefix.
-\n `Client.Name` : The bots name.
+
+`Client.Name` : The bots name.
+
 `Client.Author[read only]` : The authors discord ID, string.
+
 `Client.Token[read only]` : The clients token used to log in, string.
+
 `Client.CommandsDir` : The commands directory, string.
-`Client.getHelp(message)` : gets a help message based on your command triggers and descriptions
+
+`Client.getHelp(message)` : gets a help message based on your command triggers and descriptions.
+
 `Client.Commands` : gets an array of commands from the client, array of Commands.
+
 `Command.run(message)` : runs the command (this is done automatically by the framework when one of the triggers is sent in a message.
+
 `Command.areYou(string)` : check if the command's name or triggers match the string, returns a boolean.
+
 `Command.Name`: name of the command.
+
 `Command.Triggers` : an array of the commands triggers.
+
 `Command.OwnerOnly` : if the command is OwnerOnly, returns boolean.
+
 `Command.GuildOnly` : If the command is GuildOnly, returns boolean.
+
 `Command.Group` : The group of the command, string.
+
 `Command.Description` : The commands description.
  
 ## Credits:
