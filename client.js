@@ -57,7 +57,6 @@ class DBFClient extends Client{
     get Author() { return this.author; }
 
     get Token() { return this.token; }
-    set Token(value) { this.token = value; }
 
     get CommandsDir() { return this.commandsdir; }
     set CommandsDir(value) { this.commandsdir = value; }
