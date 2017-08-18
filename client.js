@@ -113,31 +113,45 @@ class DBFClient extends Client{
     findUser(msg){
         var foundUser;
         var countClientMentions;
-        if (msg.mentions.users.first() && (msg.mentions.users.first().id == this.user.id && msg.mentions.users.array().length > 1)){ //if 
+        if (msg.mentions.users.first() && (msg.mentions.users.first().id == this.user.id && msg.mentions.users.array().length > 1)){ //@bot command @user
             msg.mentions.users.array().forEach(user =>{
                 if(user.id !== this.user.id) foundUser = user;
             });
-        }else if (msg.mentions.users.first() && (msg.mentions.users.first().id == this.user.id)){
+        }else if (msg.mentions.users.first() && (msg.mentions.users.first().id == this.user.id)){ //@bot command username OR prefix.commmand @bot OR @bot command @bot
             let reg = new RegExp(/.[^ ]*[ ].[^ ]*[ ].[^ ]*/);
-            if (msg.content.substring(0,2) != "<@") return this.user;
+            if (msg.content.substring(0,2) != "<@") return this.user; //if the message doesnt start with an @mention, it must be a prefix.command @bot, in which case the bot is the user
             if(!reg.test(msg.content)) return console.log("didn't meet regex");
             let botmentions = 0;
-            msg.content.split(" ").forEach(word => {
-                if(word.replace(/[<>@]/g, "") == this.user.id) botmentions++;
+            msg.content.split(" ").forEach(word => { //this counts how many times the bot was mentioned.
+                if(word.replace(/[<>@]/g, "") == this.user.id) botmentions++; 
             });
-            if(botmentions > 1) foundUser = this.user;
-            else{
-                foundUser = msg.guild.members.find(mem => mem.user.username.toLowerCase() == msg.content.split(" ")[2].toLowerCase());
+            if(botmentions > 1) foundUser = this.user; //if the bot was mentioned twice, the user it returns will be the bot
+            else{ //if the bot was only mentioned once (this means )
+                let ind = 2;
+                let uname = msg.content;
+                let unameArray = uname.split(" ");
+                uname = "";
+                for(let i = ind; i < unameArray.length; i++){ //usernames can be more than one word long.
+                    uname+= " " + unameArray[i];
+                }
+                uname = uname.trim();
+                foundUser = msg.guild.members.find(mem => mem.user.username.toLowerCase() == uname.toLowerCase());
                 if (foundUser) foundUser = foundUser.user;
             }
         }else if (msg.mentions.users.first()){
             foundUser = msg.mentions.users.first();
         }else{
-            var uname = msg.content.toLowerCase();
+            var uname = msg.content;
             let reg = new RegExp(/.[^ ]*[ ].[^ ]*/);
             if(!reg.test(uname)) return;
-            uname = uname.split(" ")[1];
-            foundUser = msg.guild.members.find(mem => mem.user.username.toLowerCase() === uname);
+            let ind = 1;
+            let unameArray = uname.split(" ");
+            uname = "";
+            for(let i = ind; i < unameArray.length; i++){
+                uname+= " " + unameArray[i];
+            }
+            uname = uname.trim();
+            foundUser = msg.guild.members.find(mem => mem.user.username.toLowerCase() === uname.toLowerCase());
         }
         return foundUser;
     }

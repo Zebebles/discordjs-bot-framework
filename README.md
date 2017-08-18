@@ -53,6 +53,8 @@ module.exports = class Hello extends DBF.Command{
 
  ***(note: all of the methods/properties attatched to client can be called from anything that links to client in the discord.js library)***
 
+`Client.findUser(message)` : finds a user based on an @mention or a username
+
 `Client.Prefix`: The bots prefix.
 
 `Client.Name` : The bots name.
@@ -84,6 +86,8 @@ module.exports = class Hello extends DBF.Command{
 `Command.Group` : The group of the command, string.
 
 `Command.Description` : The commands description.
+
+`Command.Run(message)`: Execute the command.
  
 ## Credits:
 
