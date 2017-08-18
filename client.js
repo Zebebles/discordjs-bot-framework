@@ -2,7 +2,6 @@ const {Client} = require("discord.js");
 const Discord = require("discord.js");
 const fs = require("fs");
 const path = require('path');
-require("./msgHandler.js")();
    
 class DBFClient extends Client{
     constructor(options = {}) {
@@ -25,11 +24,27 @@ class DBFClient extends Client{
 
         this.commands = new Array();
 
-        this.on("message", msg => onMessage(msg, this.commands));
+        this.on("message", msg => {
+            let prefix = msg.client.Prefix;
+            if(msg.content.substring(0, prefix.length) != prefix && !msg.isMentioned(msg.client.user)) return;
+            let command;
+            if(msg.isMentioned(msg.client.user)) command = msg.content.split(" ")[1];
+            else command = msg.content.split(" ")[0];
+            if(command) command = command.replace(prefix, "");
+            else return;
+            msg.client.Commands.forEach(cmd => {
+                if(cmd.areYou(command)){
+                    if(cmd.OwnerOnly && (msg.author.id != msg.client.Author)) return;
+                    if(cmd.GuildOnly && msg.channel.type != "text") return;
+                    cmd.run(msg);
+                }
+            });
+        });
 
         this.on("ready", () =>{
             console.log("logged in as " + this.name);
             this.user.setUsername(this.name);
+            this.user.setGame(this.prefix + "help");
         });
     }
 
