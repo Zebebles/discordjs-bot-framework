@@ -14,12 +14,12 @@ Simply clone this repository into your node_modules folder.
 const DFW = require("discordjs-bot-framework");
 
 let TestBot = new DFW.Client({
-author: "your_discord_id_here", //this is used to check if the message was sent by the bot creator for ownerOnly commands
-name: "bot_name_here", //your bots username will be set to this when it logs in
-prefix: "$$", //this is used as the prefix for any command your bot will respond to.  The bot will also respont to @mentions followed by command triggers.
-cmddir: require('path').join(__dirname, 'commands'), //this is the directory of your command folder.
-token: "your_token_here", //this is your bots token.  It is used to log in as the client, and hence, should not be shared.
-MentionsTrigger: true //if this is true, @mentions followed by commands will trigger said command.
+	author: "your_discord_id_here", //this is used to check if the 	message was sent by the bot creator for ownerOnly commands
+	name: "bot_name_here", //your bots username will be set to this when it logs in
+	prefix: "$$", //this is used as the prefix for any command your bot will respond to.  The bot will also respont to @mentions followed by command triggers.
+	cmddir: require('path').join(__dirname, 'commands'), //this is the directory of your command folder.
+	token: "your_token_here", //this is your bots token.  It is used to log in as the client, and hence, should not be shared.
+	MentionsTrigger: true //if this is true, @mentions followed by commands will trigger said command.
 });
 
 TestBot.login();
