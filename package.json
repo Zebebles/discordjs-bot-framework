@@ -1,0 +1,18 @@
+{
+  "name": "discordjs-bot-framework",
+  "version": "1.0.0",
+  "description": "A framework from a discord bot",
+  "main": "discordjs-bot-framework",
+  "author": {
+      "name:": "Zeb Muller",
+      "email": "zebm54@bigpond.com",
+      "url": "https://github.com/greennoizuf"
+  },
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "discord.io": "^2.5.1",
+    "discord.js": "^11.0.0",
+    "winston": "^2.3.1"
+  },
+"files": ["index.js", "client.js", "command.js"]
+}
