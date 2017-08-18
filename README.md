@@ -18,7 +18,8 @@ author: "your_discord_id_here", //this is used to check if the message was sent 
 name: "bot_name_here", //your bots username will be set to this when it logs in
 prefix: "$$", //this is used as the prefix for any command your bot will respond to.  The bot will also respont to @mentions followed by command triggers.
 cmddir: require('path').join(__dirname, 'commands'), //this is the directory of your command folder.
-token: "your_token_here" //this is your bots token.  It is used to log in as the client, and hence, should not be shared.
+token: "your_token_here", //this is your bots token.  It is used to log in as the client, and hence, should not be shared.
+MentionsTrigger: true //if this is true, @mentions followed by commands will trigger said command.
 });
 
 TestBot.login();
@@ -37,8 +38,7 @@ module.exports = class Hello extends DBF.Command{
              group: "Misc", //this command will come under this group in the automatic help message.
              ownerOnly : true, //if this command is to be used by the bot creator only.
              description: "sends hello in the channel", //this will show in the help message
-             guildOnly : true //any command that refers to a guild with the discord.js library will crash if it triggered in a dm channel.  This prevents that.
-	     MentionsTrigger: true //if this is true, @mentions followed by commands will trigger said command.
+             guildOnly : true //any command that refers to a guild with the discord.js library will crash if it triggered in a dm channel.  This prevents that
         });
     }
 
