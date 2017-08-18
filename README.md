@@ -14,11 +14,11 @@ Simply clone this repository into your node_modules folder.
 const DFW = require("discordjs-bot-framework");
 
 let TestBot = new DFW.Client({
-author: "your_discord_id_here",
-name: "bot_name_here",
-prefix: "$$",
-cmddir: require('path').join(__dirname, 'commands'),
-token: "your_token_here"
+author: "your_discord_id_here", //this is used to check if the message was sent by the bot creator for ownerOnly commands
+name: "bot_name_here", //your bots username will be set to this when it logs in
+prefix: "$$", //this is used as the prefix for any command your bot will respond to.  The bot will also respont to @mentions followed by command triggers.
+cmddir: require('path').join(__dirname, 'commands'), //this is the directory of your command folder.
+token: "your_token_here" //this is your bots token.  It is used to log in as the client, and hence, should not be shared.
 });
 
 \t\t\tTestBot.login();
@@ -33,16 +33,16 @@ const DBF = require('discordjs-bot-framework');
 module.exports = class Hello extends DBF.Command{
     constructor(){
         super({
-             name: "hello",
-             triggers: ["hi", "hello"],
-             group: "Misc",
-             ownerOnly : true,
-             description: "sends hello in the channel",
-             guildOnly : true
+             name: "hello", //is pretty much just another trigger, but can be used filter commands.
+             triggers: ["hi", "hello"], //any message (excluding prefix) that will trigger this command.
+             group: "Misc", //this command will come under this group in the automatic help message.
+             ownerOnly : true, //if this command is to be used by the bot creator only.
+             description: "sends hello in the channel", //this will show in the help message
+             guildOnly : true //any command that refers to a guild with the discord.js library will crash if it triggered in a dm channel.  This prevents that.
         });
     }
 
-    run(message){
+    run(message){ //all the code for your command goes in here.
         message.channel.send("Hello");
     }
 }
