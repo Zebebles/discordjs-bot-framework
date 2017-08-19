@@ -38,12 +38,14 @@ module.exports = class Hello extends DBF.Command{
              group: "Misc", //this command will come under this group in the automatic help message.
              ownerOnly : true, //if this command is to be used by the bot creator only.
              description: "sends hello in the channel", //this will show in the help message
-             guildOnly : true //any command that refers to a guild with the discord.js library will crash if it triggered in a dm channel.  This prevents that
+             guildOnly : true, //any command that refers to a guild with the discord.js library will crash if it triggered in a dm channel.  This prevents that
+	     reqArgs: true, //if your command requires any args after the command, this will add them as msg parameters
+	     reqUser: true, //if your command requires an @mentioned user, this will find them add them as msg parameters
         });
     }
 
-    run(message){ //all the code for your command goes in here.
-        message.channel.send("Hello");
+    run(params = {"msg": msg, "user": user, "args": args}){ //all the code for your command goes in here.
+        message.channel.send("Hello" + params.args);
     }
 }
 
@@ -52,6 +54,8 @@ module.exports = class Hello extends DBF.Command{
 ### Methods and Properties
 
  ***(note: all of the methods/properties attatched to client can be called from anything that links to client in the discord.js library)***
+
+`Client.getArgs(message)` : gets any arguments after the command in a message
 
 `Client.findUser(message)` : finds a user based on an @mention or a username
 
