@@ -5,6 +5,7 @@ An easy to use framwork for Discord bots, using the discord.js library.
 
 ## Installation:
 `npm install discordjs-bot-framework`
+
 [GitHub](https://github.com/greennoizuf/discordjs-bot-framework)
 
 ## Use:
