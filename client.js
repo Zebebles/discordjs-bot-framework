@@ -51,7 +51,7 @@ class DBFClient extends Client{
         this.on("ready", () =>{
             console.log("logged in as " + this.name);
             this.user.setUsername(this.name);
-            this.user.setPresence({game : {name : this.prefix + "help", type: 0}});
+            this.user.setPresence({game : {name : this.Prefix + "help", type: 0}});
         });
     }
 
