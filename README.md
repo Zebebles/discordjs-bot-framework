@@ -5,7 +5,7 @@ A framework for discord bots, coded in javascript
 Zeb Muller
 
 ## Installation:
-Simply clone this repository into your node_modules folder.
+npm install discordjs-bot-framework
 
 ## Use:
 
