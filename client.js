@@ -30,13 +30,12 @@ class DBFClient extends Client{
             let prefix = msg.client.Prefix;
             let user;
             let args = "";
-            if(msg.content.substring(0, prefix.length) != prefix && !msg.isMentioned(msg.client.user)) return;
             let command;
-            if((msg.mentions.users.first() && msg.mentions.users.first().id == msg.client.user.id) && (msg.content.substring(0,2) == "<@") && this.MentionsTrigger) command = msg.content.split(" ")[1];
-            else if(msg.mentions.users.first() && (msg.mentions.users.first().id == msg.client.user.id) && !this.MentionsTrigger) return;
-            else command = msg.content.split(" ")[0];
-            if(command) command = command.replace(prefix, "");
-            else return;
+            if(msg.content.substring(0,2) == "<@" && (msg.content.indexOf(msg.client.user.id) == 2)){//@bot command (maybe @bot)
+                command = msg.content.replace(/<@.[^>]*>/g, "").trim();
+            }else if(msg.content.substring(0,prefix.length) == prefix){
+                command = msg.content.replace(prefix, "").trim()
+            }else return;
             msg.client.Commands.forEach(cmd => {
                 if(cmd.areYou(command.toLowerCase())){
                     if(cmd.OwnerOnly && (msg.author.id != msg.client.Author)) return;
@@ -116,7 +115,7 @@ class DBFClient extends Client{
 
     getArgs(msg){
         let i = 0;
-        if (msg.mentions.users.first() && (msg.mentions.users.first().id == this.user.id) && (msg.content.substring(0,2) == "<@")) i = 2; //@bot command arg arg
+        if (msg.content.substring(0,2) == "<@") i = 2; //@bot command arg arg
         else  i = 1; //>>command arg arg
         let argsArray = msg.content.split(" ");
         if (!(argsArray.length > i)) return console.log("no args");
@@ -128,49 +127,9 @@ class DBFClient extends Client{
     }
 
     findUser(msg){
-        var foundUser;
-        var countClientMentions;
-        if (msg.mentions.users.first() && (msg.mentions.users.first().id == this.user.id && msg.mentions.users.array().length > 1)){ //@bot command @user
-            msg.mentions.users.array().forEach(user =>{
-                if(user.id !== this.user.id) foundUser = user;
-            });
-        }else if (msg.mentions.users.first() && (msg.mentions.users.first().id == this.user.id)){ //@bot command username OR prefix.commmand @bot OR @bot command @bot
-            let reg = new RegExp(/.[^ ]*[ ].[^ ]*[ ].[^ ]*/);
-            if (msg.content.substring(0,2) != "<@") return this.user; //if the message doesnt start with an @mention, it must be a prefix.command @bot, in which case the bot is the user
-            if(!reg.test(msg.content)) return console.log("didn't meet regex");
-            let botmentions = 0;
-            msg.content.split(" ").forEach(word => { //this counts how many times the bot was mentioned.
-                if(word.replace(/[<>@]/g, "") == this.user.id) botmentions++; 
-            });
-            if(botmentions > 1) foundUser = this.user; //if the bot was mentioned twice, the user it returns will be the bot
-            else{ //if the bot was only mentioned once (this means )
-                let ind = 2;
-                let uname = msg.content;
-                let unameArray = uname.split(" ");
-                uname = "";
-                for(let i = ind; i < unameArray.length; i++){ //usernames can be more than one word long.
-                    uname+= " " + unameArray[i];
-                }
-                uname = uname.trim();
-                foundUser = msg.guild.members.find(mem => mem.user.username.toLowerCase() == uname.toLowerCase());
-                if (foundUser) foundUser = foundUser.user;
-            }
-        }else if (msg.mentions.users.first()){
-            foundUser = msg.mentions.users.first();
-        }else{
-            var uname = msg.content;
-            let reg = new RegExp(/.[^ ]*[ ].[^ ]*/);
-            if(!reg.test(uname)) return;
-            let ind = 1;
-            let unameArray = uname.split(" ");
-            uname = "";
-            for(let i = ind; i < unameArray.length; i++){
-                uname+= " " + unameArray[i];
-            }
-            uname = uname.trim();
-            foundUser = msg.guild.members.find(mem => mem.user.username.toLowerCase() === uname.toLowerCase());
-        }
-        return foundUser;
+        console.log("finding user");
+        let args = this.getArgs(msg);
+        return msg.mentions.members.find(mem => mem.user !== this.user) || msg.mentions.members.find(mem => mem.user.username == args) || this.user; 
     }
 }
 
