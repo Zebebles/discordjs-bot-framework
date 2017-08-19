@@ -1,8 +1,7 @@
 # discordjs-bot-framework
-A framework for discord bots, coded in javascript
 
-## Author
-Zeb Muller
+## About
+An easy to use framwork for Discord bots, using the discord.js library.
 
 ## Installation:
 `npm install discordjs-bot-framework`
@@ -40,7 +39,7 @@ module.exports = class Hello extends DBF.Command{
              description: "sends hello in the channel", //this will show in the help message
              guildOnly : true, //any command that refers to a guild with the discord.js library will crash if it triggered in a dm channel.  This prevents that
 	     reqArgs: true, //if your command requires any args after the command, this will add them as msg parameters
-	     reqUser: true, //if your command requires an @mentioned user, this will find them add them as msg parameters
+	     reqUser: true //if your command requires an @mentioned user, this will find them add them as msg parameters
         });
     }
 
