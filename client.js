@@ -28,6 +28,8 @@ class DBFClient extends Client{
 
         this.on("message", msg => {
             let prefix = msg.client.Prefix;
+            let user;
+            let args = "";
             if(msg.content.substring(0, prefix.length) != prefix && !msg.isMentioned(msg.client.user)) return;
             let command;
             if((msg.mentions.users.first() && msg.mentions.users.first().id == msg.client.user.id) && (msg.content.substring(0,2) == "<@") && this.MentionsTrigger) command = msg.content.split(" ")[1];
@@ -39,7 +41,9 @@ class DBFClient extends Client{
                 if(cmd.areYou(command.toLowerCase())){
                     if(cmd.OwnerOnly && (msg.author.id != msg.client.Author)) return;
                     if(cmd.GuildOnly && msg.channel.type != "text") return;
-                    cmd.run(msg);
+                    if(cmd.ReqUser) user = this.findUser(msg);
+                    if(cmd.ReqArgs) args = this.getArgs(msg);
+                    cmd.run({"msg": msg, "user": user, "args": args});
                 }
             });
         });
@@ -108,6 +112,19 @@ class DBFClient extends Client{
         });
 
         return helpEmbed;
+    }
+
+    getArgs(msg){
+        let i = 0;
+        if (msg.mentions.users.first() && (msg.mentions.users.first().id == this.user.id) && (msg.content.substring(0,2) == "<@")) i = 2; //@bot command arg arg
+        else  i = 1; //>>command arg arg
+        let argsArray = msg.content.split(" ");
+        if (!(argsArray.length > i)) return console.log("no args");
+        let args = "";
+        for(i; i < argsArray.length; i++){ //usernames can be more than one word long.
+            args += " " + argsArray[i];
+        }
+        return args.trim();
     }
 
     findUser(msg){

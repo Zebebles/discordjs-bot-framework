@@ -5,14 +5,18 @@ class Command{
         description: description,
         group: group,
         guildOnly: guildOnly,
-        ownerOnly: ownerOnly
+        ownerOnly: ownerOnly,
+        reqUser: reqUser,
+        reqArgs: reqArgs
     }) {
         this._name = obj.name;
         this.ownerOnly = obj.ownerOnly;
         if (obj.group)  this._group = obj.group;
         if (!obj.triggers) throw Error("Must define a trigger");
         else  this._triggers = obj.triggers;
-         this._description = obj.description;
+        this._description = obj.description;
+        this.reqUser = obj.reqUser;
+        this.reqArgs = obj.reqArgs;
         if (obj.guildOnly)  this._guildOnly = obj.guildOnly;
     }
 
@@ -24,6 +28,10 @@ class Command{
 
     get OwnerOnly(){return this.ownerOnly;}
     set OwnerOnly(value){this.ownerOnly = value;}
+
+    get ReqUser(){ return this.reqUser;}
+    
+    get ReqArgs(){return this.reqArgs;}
 
     get GuildOnly() { return this._guildOnly; }
     set GuildOnly(value) {this._guildOnly = value; }
