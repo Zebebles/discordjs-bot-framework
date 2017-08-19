@@ -55,9 +55,9 @@ module.exports = class Hello extends DBF.Command{
 
  ***(note: all of the methods/properties attatched to client can be called from anything that links to client in the discord.js library)***
 
-`Client.getArgs(message)` : gets any arguments after the command in a message
+`Client.getArgs(message)` : gets any arguments after the command in a message *note: if your bot is using MentionsTrigger, you'll definately want to use this*
 
-`Client.findUser(message)` : finds a user based on an @mention or a username
+`Client.findUser(message)` : finds a user based on an @mention or a username *note: if your bot is using MentionsTrigger, you'll definately want to use this*
 
 `Client.Prefix`: The bots prefix.
 
