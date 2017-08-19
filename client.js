@@ -31,7 +31,7 @@ class DBFClient extends Client{
             let user;
             let args = "";
             let command;
-            if(msg.content.substring(0,2) == "<@" && (msg.content.indexOf(msg.client.user.id) == 2)){//@bot command (maybe @bot)
+            if(msg.content.substring(0,2) == "<@" && (msg.content.indexOf(msg.client.user.id) <= 3)){//@bot command (maybe @bot)
                 let regex = new RegExp(/[ ]/g);
                 command = msg.content;
                 if(!regex.test(command)) return console.log("regex");
