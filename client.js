@@ -32,9 +32,13 @@ class DBFClient extends Client{
             let args = "";
             let command;
             if(msg.content.substring(0,2) == "<@" && (msg.content.indexOf(msg.client.user.id) == 2)){//@bot command (maybe @bot)
-                command = msg.content.replace(/<@.[^>]*>/g, "").trim();
+                let regex = new RegExp(/[ ]/g);
+                command = msg.content;
+                if(!regex.test(command)) return console.log("regex");
+                command = msg.content.split(" ")[1];
             }else if(msg.content.substring(0,prefix.length) == prefix){
-                command = msg.content.replace(prefix, "").trim()
+                command = msg.content + " ";
+                command = command.split(" ")[0].replace(prefix, "").trim();
             }else return;
             msg.client.Commands.forEach(cmd => {
                 if(cmd.areYou(command.toLowerCase())){
@@ -129,7 +133,10 @@ class DBFClient extends Client{
     findUser(msg){
         console.log("finding user");
         let args = this.getArgs(msg);
-        return msg.mentions.members.find(mem => mem.user !== this.user) || msg.mentions.members.find(mem => mem.user.username == args) || this.user; 
+        if(!args || args == "") return;
+        let found =  msg.mentions.members.find(mem => mem.user.id != this.user.id) || msg.guild.members.find(mem => mem.user.username.toLowerCase().trim() == args.toLowerCase().trim()) || msg.guild.members.get(this.user.id);
+        if(found.user == this.user && !(args.toLowerCase().includes(this.Name.toLowerCase()) || args.includes(this.user.id))) return;
+        return found.user; 
     }
 }
 
