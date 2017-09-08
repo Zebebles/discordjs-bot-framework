@@ -34,7 +34,7 @@ class DBFClient extends Client{
             if(msg.content.substring(0,2) == "<@" && (msg.content.indexOf(msg.client.user.id) == 3 || msg.content.indexOf(msg.client.user.id) == 2)){//@bot command (maybe @bot)
                 let regex = new RegExp(/[ ]/g);
                 command = msg.content;
-                if(!regex.test(command)) return console.log("regex");
+                if(!regex.test(command)) return;
                 command = msg.content.split(" ")[1];
             }else if(msg.content.substring(0,prefix.length) == prefix){
                 command = msg.content + " ";
@@ -122,7 +122,7 @@ class DBFClient extends Client{
         if (msg.content.substring(0,2) == "<@") i = 2; //@bot command arg arg
         else  i = 1; //>>command arg arg
         let argsArray = msg.content.split(" ");
-        if (!(argsArray.length > i)) return console.log("no args");
+        if (!(argsArray.length > i)) return;
         let args = "";
         for(i; i < argsArray.length; i++){ //usernames can be more than one word long.
             args += " " + argsArray[i];
