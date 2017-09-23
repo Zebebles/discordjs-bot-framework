@@ -134,7 +134,10 @@ class DBFClient extends Client{
         console.log("finding user");
         let args = this.getArgs(msg);
         if(!args || args == "") return;
-        let found =  msg.mentions.members.find(mem => mem.user.id != this.user.id) || msg.guild.members.find(mem => mem.user.username.toLowerCase().trim() == args.toLowerCase().trim()) || msg.guild.members.get(this.user.id);
+        let found =  msg.mentions.members.find(mem => mem.user.id != this.user.id) || 
+            msg.guild.members.find(mem => mem.user.username.toLowerCase().trim().includes(args.toLowerCase().trim()) || 
+            mem.displayName.toLowerCase().trim().includes(args.toLowerCase().trim())) || 
+            msg.guild.members.get(this.user.id);
         if(found.user == this.user && !(args.toLowerCase().includes(this.Name.toLowerCase()) || args.includes(this.user.id))) return;
         return found.user; 
     }
