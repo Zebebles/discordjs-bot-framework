@@ -131,7 +131,7 @@ class DBFClient extends Client{
     }
 
     findUser(msg){
-        console.log("finding user");
+        //console.log("finding user");
         let args = this.getArgs(msg);
         if(!args || args == "") return;
         let found =  msg.mentions.members.find(mem => mem.user.id != this.user.id) || 
