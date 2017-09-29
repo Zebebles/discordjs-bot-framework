@@ -94,7 +94,6 @@ class DBFClient extends Client{
 
     getHelp(message){
         let helpEmbeds = new Array();
-        helpEmbed.setColor([127, 161, 216]);
         let groups = [];
         let cmds = this.Commands;
         cmds.forEach(cmd => {
@@ -104,6 +103,7 @@ class DBFClient extends Client{
         let helpMsg;
         groups.forEach(group => {
                 helpEmbeds.push(new Discord.RichEmbed());
+                helpEmbeds[helpEmbeds.length - 1].setColor([127, 161, 216]);                            
                 helpMsg = "\n";
                 let groupCommands = cmds.filter(cmd => {
                     if(group == cmd.Group) return cmd;
