@@ -93,7 +93,7 @@ class DBFClient extends Client{
     }
 
     getHelp(message){
-        let helpEmbed = new Discord.RichEmbed();
+        let helpEmbeds = new Array();
         helpEmbed.setColor([127, 161, 216]);
         let groups = [];
         let cmds = this.Commands;
@@ -103,6 +103,7 @@ class DBFClient extends Client{
         });
         let helpMsg;
         groups.forEach(group => {
+                helpEmbeds.push(new Discord.RichEmbed());
                 helpMsg = "\n";
                 let groupCommands = cmds.filter(cmd => {
                     if(group == cmd.Group) return cmd;
@@ -111,10 +112,11 @@ class DBFClient extends Client{
                      if(command.OwnerOnly && (message.author.id != message.client.Author));
                      else helpMsg += "\n\n**" + command.Triggers[0] + "** : *" + command.Description + "*"; 
                 });
-            helpEmbed.addField(group, helpMsg);
+            helpEmbeds[helpEmbeds.length-1].setTitle(group);
+            helpEmbeds[helpEmbeds.length-1].setDescription(helpMsg);
         });
 
-        return helpEmbed;
+        return helpEmbeds;
     }
 
     getArgs(msg){
