@@ -28,6 +28,7 @@ class DBFClient extends Client{
 
         this.on("message", msg => {
             let prefix = msg.client.Prefix;
+            if(msg.guild) prefix = msg.guild.prefix;
             let user;
             let args = "";
             let command;
