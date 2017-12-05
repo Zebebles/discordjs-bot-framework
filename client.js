@@ -38,7 +38,7 @@ class DBFClient extends Client{
                 if(!regex.test(command)) return;
                 command = msg.content.split(" ")[1];
             }else if(msg.content.substring(0,prefix.length) == prefix){
-                command = msg.content + " ";
+                command = msg.content.trim() + " ";
                 command = command.split(" ")[0].replace(prefix, "").trim();
             }else return;
             msg.client.Commands.forEach(cmd => {
