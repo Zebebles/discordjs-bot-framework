@@ -45,8 +45,8 @@ class DBFClient extends Client{
                 if(cmd.areYou(command.toLowerCase())){
                     if(cmd.OwnerOnly && (msg.author.id != msg.client.Author)) return;
                     if(cmd.GuildOnly && msg.channel.type != "text") return;
-                    if( (msg.channel.disabledCommands && msg.channel.disabledCommands.find(command => cmd._name == command)) 
-                        || (msg.guild.disabledCommands && msg.guild.disabledCommands.find(command => command == cmd._name)))
+                    if( msg.guild && ((msg.channel.disabledCommands && msg.channel.disabledCommands.find(command => cmd._name == command)) 
+                        || (msg.guild.disabledCommands && msg.guild.disabledCommands.find(command => command == cmd._name))))
                             return
                     if(cmd.ReqUser) user = this.findUser(msg);
                     if(cmd.ReqArgs) args = this.getArgs(msg);
