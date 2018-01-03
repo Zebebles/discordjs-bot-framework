@@ -48,7 +48,7 @@ class DBFClient extends Client{
                         cmd.guilds = new Array();
                     let thisGuild = cmd.guilds.find(g => g.id == msg.guild.id);
                     if(thisGuild && thisGuild.nextUse > Date.now())
-                        return msg.reply("Hold up! You can't use that command again for **" + (Date.now() - cmd.guilds.find(g => g.id == msg.guild.id).nextUse)/1000 + "** seconds.");
+                        return msg.reply("Hold up! You can't use that command again for **" + ((thisGuild.nextUse - Date.now())/1000).toFixed(1) + "** seconds.");
                     else{
                         if(!thisGuild)
                             cmd.guilds.push({id: msg.guild.id, nextUse: Date.now() + 2000});
