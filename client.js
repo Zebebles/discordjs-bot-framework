@@ -43,6 +43,19 @@ class DBFClient extends Client{
             }else return;
             msg.client.Commands.forEach(cmd => {
                 if(cmd.areYou(command.toLowerCase())){
+                    //spam check
+                    if(!cmd.guilds)
+                        cmd.guilds = new Array();
+                    thisGuild = cmd.guilds.find(g => g.id == msg.guild.id);
+                    if(thisGuild && thisGuild.nextUse < Date.now())
+                        return msg.reply("Hold up! You can't use that command again for **" + (Date.now() - cmd.guilds.find(g => g.id == msg.guild.id).nextUse)/1000 + "** seconds.");
+                    else{
+                        if(!thisGuild)
+                            cmd.guilds.push({id: msg.guild.id, nextUse: Date.now() + 2000});
+                        else
+                            thisGuild.nextUse = Date.now() + 2000;
+                    }
+                    //end spam check
                     if(cmd.OwnerOnly && (msg.author.id != msg.client.Author)) return;
                     if(cmd.GuildOnly && msg.channel.type != "text") return;
                     if( msg.guild && ((msg.channel.disabledCommands && msg.channel.disabledCommands.find(command => cmd._name == command)) 
