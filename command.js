@@ -49,7 +49,7 @@ class Command{
     areYou(cmd){
         var found = false;
         this._triggers.forEach(trigger => {
-            if (cmd.match(trigger))
+            if (cmd.trim() == trigger.trim())
                 found = true;
         });
         return found
