@@ -46,7 +46,7 @@ class DBFClient extends Client{
                     //spam check
                     if(!cmd.guilds)
                         cmd.guilds = new Array();
-                    thisGuild = cmd.guilds.find(g => g.id == msg.guild.id);
+                    let thisGuild = cmd.guilds.find(g => g.id == msg.guild.id);
                     if(thisGuild && thisGuild.nextUse < Date.now())
                         return msg.reply("Hold up! You can't use that command again for **" + (Date.now() - cmd.guilds.find(g => g.id == msg.guild.id).nextUse)/1000 + "** seconds.");
                     else{
