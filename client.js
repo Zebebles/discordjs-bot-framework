@@ -47,7 +47,7 @@ class DBFClient extends Client{
                     if(msg.author.nextUse && msg.author.nextUse > Date.now())
                         return msg.reply("Hold up! You're on command cooldown for another **" + ((msg.author.nextUse - Date.now())/1000).toFixed(1) + "** seconds.").then(m => m.delete(2500));
                     else
-                        msg.author.nextUse = Date.now() + 2000;
+                        msg.author.nextUse = Date.now() + 1000;
                     //end spam check
                     if(cmd.OwnerOnly && (msg.author.id != msg.client.Author)) return;
                     if(cmd.GuildOnly && msg.channel.type != "text") return;
