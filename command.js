@@ -3,28 +3,31 @@ class Command{
         name: name,
         triggers: triggers,
         description: description,
+        example: example,
         group: group,
         guildOnly: guildOnly,
         ownerOnly: ownerOnly,
         reqUser: reqUser,
         reqArgs: reqArgs
     }) {
-        this._name = obj.name;
+        this.name = obj.name;
         this.ownerOnly = obj.ownerOnly;
         if (obj.group)  this._group = obj.group;
         if (!obj.triggers) throw Error("Must define a trigger");
-        else  this._triggers = obj.triggers;
-        this._description = obj.description;
+        else  this.triggers = obj.triggers;
+        this.description = obj.description;
+        if(this.example)
+            this.example = obj.example;
         this.reqUser = obj.reqUser;
         this.reqArgs = obj.reqArgs;
-        if (obj.guildOnly)  this._guildOnly = obj.guildOnly;
+        if (obj.guildOnly)  this.guildOnly = obj.guildOnly;
     }
 
-    get Name() { return this._name;  }
-    set Name(value) { this._name = value; }
+    get Name() { return this.name;  }
+    set Name(value) { this.name = value; }
 
-    get Triggers() { return this._triggers; }
-    set Triggers(value) { this._triggers = value; }
+    get Triggers() { return this.triggers; }
+    set Triggers(value) { this.triggers = value; }
 
     get OwnerOnly(){return this.ownerOnly;}
     set OwnerOnly(value){this.ownerOnly = value;}
@@ -33,14 +36,14 @@ class Command{
     
     get ReqArgs(){return this.reqArgs;}
 
-    get GuildOnly() { return this._guildOnly; }
-    set GuildOnly(value) {this._guildOnly = value; }
+    get GuildOnly() { return this.guildOnly; }
+    set GuildOnly(value) {this.guildOnly = value; }
 
-    get Group() { return this._group; }
-    set Group(value) { return this._group; }
+    get Group() { return this.group; }
+    set Group(value) { return this.group; }
 
-    get Description() { return this._description; }
-    set Description(value) { this._description = value; }
+    get Description() { return this.description; }
+    set Description(value) { this.description = value; }
 
     run() {
         console.log("default command");
@@ -48,7 +51,7 @@ class Command{
 
     areYou(cmd){
         var found = false;
-        this._triggers.forEach(trigger => {
+        this.triggers.forEach(trigger => {
             if (cmd.trim() == trigger.trim())
                 found = true;
         });
