@@ -16,9 +16,10 @@ class Command{
         if (!obj.triggers) throw Error("Must define a trigger");
         else  this.triggers = obj.triggers;
         this.description = obj.description;
-        if(this.example)
+        if(obj.example)
             this.example = obj.example;
         this.reqUser = obj.reqUser;
+        this.group = obj.group;
         this.reqArgs = obj.reqArgs;
         if (obj.guildOnly)  this.guildOnly = obj.guildOnly;
     }
