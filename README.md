@@ -40,8 +40,8 @@ module.exports = class Hello extends DBF.Command{
              ownerOnly : true, //if this command is to be used by the bot creator only.
              description: "sends hello in the channel", //this will show in the help message
              guildOnly : true, //any command that refers to a guild with the discord.js library will crash if it triggered in a dm channel.  This prevents that
-	     reqArgs: true, //if your command requires any args after the command, this will add them as msg parameters
-	     reqUser: true //if your command requires an @mentioned user, this will find them add them as msg parameters
+	        reqArgs: true, //if your command requires any args after the command, this will add them as msg parameters
+	        reqUser: true //if your command requires an @mentioned user, this will find them add them as msg parameters
         });
     }
 
@@ -98,4 +98,3 @@ module.exports = class Hello extends DBF.Command{
 
 [Discord.js](https://discord.js.org/#/) Discord.js is the node.js library used by this framework that allows interaction with the Discord API
 
-[Smooth discord.js](https://github.com/KyeNormanGill/smooth-discord.js) - This similar bot framework was used as a reference for some things I was unsure of how to do (like all the module.exports stuff and some "path" and "fs" stuff)
