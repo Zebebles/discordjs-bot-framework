@@ -37,7 +37,7 @@ class DBFClient extends Client{
                 command = msg.content;
                 if(!regex.test(command)) return;
                 command = msg.content.split(" ")[1];
-            }else if(msg.content.substring(0,prefix.length) == prefix){
+            }else if(msg.content.substring(0,prefix.length) == prefix || msg.channel.type == "dm"){
                 command = msg.content.trim() + " ";
                 command = command.split(" ")[0].replace(prefix, "").trim();
             }else return;
@@ -45,14 +45,17 @@ class DBFClient extends Client{
                 if(cmd.areYou(command.toLowerCase())){
                     //spam check
                     if(msg.author.nextUse && msg.author.nextUse > Date.now())
-                        return msg.reply("Hold up! You're on command cooldown for another **" + ((msg.author.nextUse - Date.now())/1000).toFixed(1) + "** seconds.").then(m => m.delete(2500));
+                        return msg.reply("Hold up! You're on command cooldown for another **" + ((msg.author.nextUse - Date.now())/1000).toFixed(1) + "** seconds.").then(m => {
+                            m.delete(2500)
+                            msg.delete(2500);
+                        });
                     else
                         msg.author.nextUse = Date.now() + 1000;
                     //end spam check
                     if(cmd.OwnerOnly && (msg.author.id != msg.client.Author)) return;
-                    if(cmd.GuildOnly && msg.channel.type != "text") return;
-                    if( msg.guild && ((msg.channel.disabledCommands && msg.channel.disabledCommands.find(command => cmd._name == command)) 
-                        || (msg.guild.disabledCommands && msg.guild.disabledCommands.find(command => command == cmd._name))))
+                    if(cmd.GuildOnly && msg.channel.type != "text") return msg.channel.send("The command **" + cmd.triggers[0] + "** can't be used in private chats.");
+                    if( msg.guild && ((msg.channel.disabledCommands && msg.channel.disabledCommands.find(command => cmd.name == command)) 
+                        || (msg.guild.disabledCommands && msg.guild.disabledCommands.find(command => command == cmd.name))))
                             return
                     if(cmd.ReqUser) user = this.findUser(msg);
                     if(cmd.ReqArgs) args = this.getArgs(msg);
