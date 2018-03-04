@@ -56,6 +56,8 @@ class Command{
             if (cmd.trim() == trigger.trim())
                 found = true;
         });
+        if(cmd.trim() == this.name.toLowerCase())
+            found = true;
         return found
     }
 }
