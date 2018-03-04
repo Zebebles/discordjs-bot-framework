@@ -51,13 +51,14 @@ class Command{
     }
 
     areYou(cmd){
+        if(cmd.trim() == this.name.toLowerCase())
+            return true;
         var found = false;
         this.triggers.forEach(trigger => {
             if (cmd.trim() == trigger.trim())
                 found = true;
         });
-        if(cmd.trim() == this.name.toLowerCase())
-            found = true;
+
         return found
     }
 }
