@@ -56,7 +56,14 @@ class DBFClient extends Client{
                             return
                     if(cmd.ReqUser) user = this.findUser(msg);
                     if(cmd.ReqArgs) args = this.getArgs(msg);
-                    cmd.run({"msg": msg, "user": user, "args": args});
+                    try{
+                        cmd.run({"msg": msg, "user": user, "args": args});
+                    }catch(e){
+                        if(msg.guild)
+                            console.log("Error executing command '" + cmd.name + "' in '" + msg.guild.name + "'\n" + e)
+                        else
+                            console.log("Error executing command '" + cmd.name + "' in dm'\n" + e)
+                    }
                 }
             });
         });
