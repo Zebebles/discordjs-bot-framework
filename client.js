@@ -54,6 +54,8 @@ class DBFClient extends Client{
                     if( msg.guild && ((msg.channel.disabledCommands && msg.channel.disabledCommands.find(command => cmd.name == command)) 
                         || (msg.guild.disabledCommands && msg.guild.disabledCommands.find(command => command == cmd.name))))
                             return
+                    if(msg.guild && !msg.channel.permissionsFor(msg.guild.me).has("SEND_MESSAGES"))
+                        return;
                     if(cmd.ReqUser) user = this.findUser(msg);
                     if(cmd.ReqArgs) args = this.getArgs(msg);
                     try{
