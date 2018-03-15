@@ -151,11 +151,11 @@ class DBFClient extends Client{
 
     findUser(msg){
         //console.log("finding user");
-        let args = this.getArgs(msg);
+        let args = this.getArgs(msg) + " ";
         if(!args || args == "") return;
         let found =  msg.mentions.members.find(mem => mem.user.id != this.user.id) || 
             msg.guild.members.find(mem =>  mem.displayName.toLowerCase().trim().includes(args.toLowerCase().trim()) ||  mem.user.username.toLowerCase().trim().includes(args.toLowerCase().trim())
-                                            || args.split(" ").find(arg => mem.displayName.toLowerCase().trim().includes(arg.toLowerCase().trim()) || mem.user.username.toLowerCase().trim().includes(arg.toLowerCase().trim())) )
+                                            || mem.displayName.toLowerCase().trim().includes(args.split(" ")[0].toLowerCase().trim()) || mem.user.username.toLowerCase().trim().includes(args.split(" ")[0].toLowerCase().trim()) )
             ||  msg.guild.members.get(this.user.id);
         if(found.user == this.user && !(args.toLowerCase().includes(this.Name.toLowerCase()) || args.includes(this.user.id))) return;
         return found.user; 
