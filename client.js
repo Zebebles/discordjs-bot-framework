@@ -148,11 +148,11 @@ class DBFClient extends Client{
         let args = this.getArgs(msg) + " ";
         let regex = new RegExp("@(!)?" + this.user.id + ">", "g");
         let found =  msg.mentions.members.find(mem => mem.user.id != this.user.id) 
-                        || (args.match(regex) ? msg.guild.me : msg.guild.members.find(mem =>  mem.displayName.toLowerCase().trim().includes(args.toLowerCase().trim())
-                                                                                                            ||  mem.user.username.toLowerCase().trim().includes(args.toLowerCase().trim())
-                                                                                                            || (args.split(" ") && args.split(" ").find(arg => !arg.match(/^\d+$/g) && (mem.displayName.toLowerCase().trim().includes(arg.toLowerCase().trim()) //  check if any of the words in args match usernames.
-                                                                                                                                                            || mem.user.username.toLowerCase().trim().includes(arg.toLowerCase().trim())))) //  Doesn't check words that are just numbrs
-                                                                                                                                ? mem : false));
+                        || (args.match(regex) ? msg.guild.me : (args ? msg.guild.members.find(mem =>  mem.displayName.toLowerCase().trim().includes(args.toLowerCase().trim())
+                                                                                            ||  mem.user.username.toLowerCase().trim().includes(args.toLowerCase().trim())
+                                                                                            || (args.split(" ") && args.split(" ").find(arg => !arg.match(/^\d+$/g) && (mem.displayName.toLowerCase().trim().includes(arg.toLowerCase().trim()) //  check if any of the words in args match usernames.
+                                                                                                                                            || mem.user.username.toLowerCase().trim().includes(arg.toLowerCase().trim())))) //  Doesn't check words that are just numbrs
+                                                                                                ? mem : null ): null));
         return found ? found.user : null; 
     }
 }
