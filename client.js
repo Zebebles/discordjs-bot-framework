@@ -32,6 +32,8 @@ class DBFClient extends Client{
             let user;
             let args = "";
             let command;
+            if(msg.guild && !msg.channel.permissionsFor(msg.guild.me).has("SEND_MESSAGES"))
+                return;
             if(msg.content.substring(0,2) == "<@" && (msg.content.indexOf(msg.client.user.id) == 3 || msg.content.indexOf(msg.client.user.id) == 2)){//@bot command (maybe @bot)
                 let regex = new RegExp(/[ ]/g);
                 command = msg.content;
@@ -54,8 +56,6 @@ class DBFClient extends Client{
                     if( msg.guild && ((msg.channel.disabledCommands && msg.channel.disabledCommands.find(command => cmd.name == command)) 
                         || (msg.guild.disabledCommands && msg.guild.disabledCommands.find(command => command == cmd.name))))
                             return
-                    if(msg.guild && !msg.channel.permissionsFor(msg.guild.me).has("SEND_MESSAGES"))
-                        return;
                     if(cmd.ReqUser) user = this.findUser(msg);
                     if(cmd.ReqArgs) args = this.getArgs(msg);
                     try{
@@ -137,28 +137,23 @@ class DBFClient extends Client{
     }
 
     getArgs(msg){
-        let i = 0;
-        if (msg.content.substring(0,2) == "<@") i = 2; //@bot command arg arg
-        else  i = 1; //>>command arg arg
-        let argsArray = msg.content.split(" ");
-        if (!(argsArray.length > i)) return;
-        let args = "";
-        for(i; i < argsArray.length; i++){ //usernames can be more than one word long.
-            args += " " + argsArray[i];
-        }
-        return args.trim();
+        let removing = 1;
+        if(msg.content.indexOf(this.user.id + ">") == 2) // @bot command args.  else prefixcommand args
+            removing = 2;
+        let args = msg.content.split(" ");
+        return (args && args.splice(0,removing)) ? args.join(" ") : null;
     }
 
     findUser(msg){
-        //console.log("finding user");
         let args = this.getArgs(msg) + " ";
-        if(!args || args == "") return;
-        let found =  msg.mentions.members.find(mem => mem.user.id != this.user.id) || 
-            msg.guild.members.find(mem =>  mem.displayName.toLowerCase().trim().includes(args.toLowerCase().trim()) ||  mem.user.username.toLowerCase().trim().includes(args.toLowerCase().trim())
-                                            || mem.displayName.toLowerCase().trim().includes(args.split(" ")[0].toLowerCase().trim()) || mem.user.username.toLowerCase().trim().includes(args.split(" ")[0].toLowerCase().trim()) )
-            ||  msg.guild.members.get(this.user.id);
-        if(found.user == this.user && !(args.toLowerCase().includes(this.Name.toLowerCase()) || args.includes(this.user.id))) return;
-        return found.user; 
+        let regex = new RegExp("@(!)?" + this.user.id + ">", "g");
+        let found =  msg.mentions.members.find(mem => mem.user.id != this.user.id) 
+                        || (args.match(regex) ? msg.guild.me : msg.guild.members.find(mem =>  mem.displayName.toLowerCase().trim().includes(args.toLowerCase().trim())
+                                                                                                            ||  mem.user.username.toLowerCase().trim().includes(args.toLowerCase().trim())
+                                                                                                            || (args.split(" ") && args.split(" ").find(arg => !arg.match(/^\d+$/g) && (mem.displayName.toLowerCase().trim().includes(arg.toLowerCase().trim()) //  check if any of the words in args match usernames.
+                                                                                                                                                            || mem.user.username.toLowerCase().trim().includes(arg.toLowerCase().trim())))) //  Doesn't check words that are just numbrs
+                                                                                                                                ? mem : false));
+        return found ? found.user : null; 
     }
 }
 
