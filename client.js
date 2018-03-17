@@ -49,10 +49,10 @@ class DBFClient extends Client{
                 return;
             
             if(cmd.reqPerms.length != 0 && msg.guild){
-                let userMissing = msg.member.missingPermissions(cmd.reqPerms);
+                let userMissing = msg.member.missingPermissions(cmd.reqUserPerms);
                 if(userMissing && userMissing.length != 0)
                     return msg.channel.send("You need permission `" + userMissing[0] + "` to do that.");
-                let botMissing = msg.guild.me.missingPermissions(cmd.reqPerms);
+                let botMissing = msg.guild.me.missingPermissions(cmd.reqBotPerms);
                 if(botMissing && botMissing.length != 0)
                     return msg.channel.send("I need permission `" + botMissing[0] + "` to be able to do that.");
             }

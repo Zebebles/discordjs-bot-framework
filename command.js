@@ -19,7 +19,8 @@ class Command{
         this.group = obj.group;
         this.reqArgs = obj.reqArgs;
         this.guildOnly = obj.guildOnly;
-        this.reqPerms = obj.reqPerms ? obj.reqPerms : new Array(); 
+        this.reqUserPerms = obj.reqUserPerms ? obj.reqUserPerms : new Array(); 
+        this.reqBotPerms = obj.reqBotPerms ? obj.reqBotPerms : new Array(); 
     }
 
     run() {
