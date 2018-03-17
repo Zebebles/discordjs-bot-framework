@@ -48,7 +48,7 @@ class DBFClient extends Client{
             if(!cmd) //if the command doesn't exist.
                 return;
             
-            if(cmd.reqPerms.length != 0 && msg.guild){
+            if((cmd.reqUserPerms.length != 0 || cmd.reqBotPerms != 0) && msg.guild){
                 let userMissing = msg.member.missingPermissions(cmd.reqUserPerms);
                 if(userMissing && userMissing.length != 0)
                     return msg.channel.send("You need permission `" + userMissing[0] + "` to do that.");
