@@ -4,17 +4,13 @@ class Command{
         if (!obj.name)
             throw Error("Must define a command name.");
         if(!obj.description)
-            throw Error("Must define command description");
-        if (!obj.example)
-            throw Error("Must define a commmand example");
-        if (!obj.group)
-            throw Error("Must define a command group");
+            throw Error("Must define command description.");
         this.name = obj.name;
         this.ownerOnly = obj.ownerOnly;
-        this.group = obj.group;
+        this.group = obj.group ? obj.group : "ungrouped";
         this.triggers = obj.triggers;
         this.description = obj.description;
-        this.example = obj.example;
+        this.example = obj.example ? obj.example : "";
         this.reqUser = obj.reqUser;
         this.group = obj.group;
         this.reqArgs = obj.reqArgs;
