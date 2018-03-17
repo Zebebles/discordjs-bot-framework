@@ -24,11 +24,11 @@ class Command{
     }
 
     areYou(cmd){
-        if(cmd.trim() == this.name.toLowerCase())
+        if(cmd.trim().toLowerCase() == this.name.toLowerCase())
             return true;
         var found = false;
         this.triggers.forEach(trigger => {
-            if (cmd.trim() == trigger.trim())
+            if (cmd.trim().toLowerCase() == trigger.trim().toLowerCase())
                 found = true;
         });
 
