@@ -71,8 +71,11 @@ class DBFClient extends Client{
                 
             if(cmd.reqArgs) //set the args variable if the command needs the args.
                 args = this.getArgs(msg);
-
-            cmd.run({"msg": msg, "user": user, "args": args}); //run the command 
+            try{
+                cmd.run({"msg": msg, "user": user, "args": args}); //run the command 
+            }catch(err){
+                console.log("Error executing command " + cmd.name + ".\nMessage that triggered: " + msg.content + "\n"+err);
+            }
         });
 
         this.on("ready", () =>{
