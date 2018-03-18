@@ -68,7 +68,7 @@ module.exports = class Hello extends DBF.Command{
 
 `Client.commandsDir` : The commands directory, string.
 
-`Client.getHelp(message)` : gets a help message based on your command triggers and descriptions.
+`Client.reloadCommands(command_name or group)` : reloads a command or a group of commands.  Any changes to the command will be applied
 
 `Client.commands` : gets an array of commands from the client, array of Commands.
 

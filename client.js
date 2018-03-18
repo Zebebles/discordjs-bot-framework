@@ -90,6 +90,7 @@ class DBFClient extends Client{
                 if (path.extname(file) == ".js"){
                     const Command = require(path.join(this.commandsdir, file));
                     const cmd = new Command();
+                    cmd.filename = path.join(this.commandsdir, file);
                     this.commands.push(cmd);
                 }
             });
@@ -98,31 +99,29 @@ class DBFClient extends Client{
         super.login(this.token+"");
     }
 
-    getHelp(message){
-        let helpEmbeds = new Array();
-        let groups = [];
-        let cmds = this.commands;
-        cmds.forEach(cmd => {
-            let group = groups.filter(group => group == cmd.group);
-            if(group.length == 0) groups.push(cmd.group);
+    reloadCommands(identifier){
+        let toReload = identifier 
+            ?   (this.commands.find(cmd => cmd.group.toLowerCase() == identifier.toLowerCase())
+                ?   this.commands.filter(cmd => cmd.group.toLowerCase() == identifier.toLowerCase()) 
+                :   [this.commands.find(cmd => cmd.areYou(identifier))]) 
+            :   this.commands;
+        if(!toReload[0])
+            return console.log("notfound");
+        
+        toReload.forEach(cmd => {
+            fs.readFile(cmd.filename,'utf-8', (err, res) => {
+                if(err)
+                    return console.log(err);
+                else{
+                    const Command = eval(res);
+                    const CMD = new Command();
+                    CMD.filename = cmd.filename;
+                    this.commands[this.commands.indexOf(cmd)] = CMD;
+                }
+            });
         });
-        let helpMsg;
-        groups.forEach(group => {
-                helpEmbeds.push(new Discord.RichEmbed());
-                helpEmbeds[helpEmbeds.length - 1].setColor([127, 161, 216]);                            
-                helpMsg = "\n";
-                let groupCommands = cmds.filter(cmd => {
-                    if(group == cmd.group) return cmd;
-                });
-                groupCommands.forEach(command =>{
-                     if(command.ownerOnly && (message.author.id != message.client.author));
-                     else helpMsg += "\n\n**" + command.triggers[0] + "** : *" + command.description + "*"; 
-                });
-            helpEmbeds[helpEmbeds.length-1].setTitle(group);
-            helpEmbeds[helpEmbeds.length-1].setDescription(helpMsg);
-        });
-
-        return helpEmbeds;
+        return toReload.length;
+        
     }
 
     getArgs(msg){
