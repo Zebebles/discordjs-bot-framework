@@ -106,7 +106,7 @@ class DBFClient extends Client{
                 :   [this.commands.find(cmd => cmd.areYou(identifier))]) 
             :   this.commands;
         if(!toReload[0])
-            return console.log("notfound");
+            return;
         
         toReload.forEach(cmd => {
             fs.readFile(cmd.filename,'utf-8', (err, res) => {
