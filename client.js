@@ -109,16 +109,11 @@ class DBFClient extends Client{
             return;
         
         toReload.forEach(cmd => {
-            fs.readFile(cmd.filename,'utf-8', (err, res) => {
-                if(err)
-                    return console.log(err);
-                else{
-                    const Command = eval(res);
-                    const CMD = new Command();
-                    CMD.filename = cmd.filename;
-                    this.commands[this.commands.indexOf(cmd)] = CMD;
-                }
-            });
+            delete require.cache[require.resolve(cmd.filename)];
+            const Command = require(cmd.filename);
+            const CMD = new Command();
+            CMD.filename = cmd.filename;
+            this.commands[this.commands.indexOf(cmd)] = CMD;
         });
         return toReload.length;
         
