@@ -47,6 +47,8 @@ class DBFClient extends Client{
             let cmd = this.commands.find(c => c.areYou(command));//try find a command that matches the command name
             if(!cmd) //if the command doesn't exist.
                 return;
+            if(cmd.guildOnly && msg.channel.type == "dm")
+                return msg.channel.send("The command `" + cmd.name + "` can't be used in private messages.");
             
             if((cmd.reqUserPerms.length != 0 || cmd.reqBotPerms != 0) && msg.guild){
                 let userMissing = msg.member.missingPermissions(cmd.reqUserPerms);
