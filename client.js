@@ -101,9 +101,7 @@ class DBFClient extends Client{
 
     reloadCommands(identifier){
         let toReload = identifier 
-            ?   (this.commands.find(cmd => cmd.group.toLowerCase() == identifier.toLowerCase())
-                ?   this.commands.filter(cmd => cmd.group.toLowerCase() == identifier.toLowerCase()) 
-                :   [this.commands.find(cmd => cmd.areYou(identifier))]) 
+            ?   this.commands.filter(cmd => cmd.group.toLowerCase().trim() == identifier.trim().toLowerCase() || cmd.areYou(identifier.trim().toLowerCase())) 
             :   this.commands;
         if(!toReload[0])
             return;
