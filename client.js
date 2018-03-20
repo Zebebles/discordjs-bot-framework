@@ -48,23 +48,23 @@ class DBFClient extends Client{
             if(!cmd) //if the command doesn't exist.
                 return;
             if(cmd.guildOnly && msg.channel.type == "dm")
-                return this.emit('notGuild', {command: cmd, user: msg.author});
+                return this.emit('notGuild', {command: cmd, message: msg});
             
             if((cmd.reqUserPerms.length != 0 || cmd.reqBotPerms != 0) && msg.guild){
                 let userMissing = msg.member.missingPermissions(cmd.reqUserPerms);
                 if(userMissing && userMissing.length != 0)
-                    return this.emit('missingPermissions', {bot: false, command: cmd, user: msg.author, guild: msg.guild, permissions: userMissing});
+                    return this.emit('missingPermissions', {bot: false, command: cmd, message: msg, permissions: userMissing});
                 let botMissing = msg.guild.me.missingPermissions(cmd.reqBotPerms);
                 if(botMissing && botMissing.length != 0)
-                    return this.emit('missingPermissions', {bot: true, command: cmd, user: msg.author, guild: msg.guild, permissions: botMissing});
+                    return this.emit('missingPermissions', {bot: true, command: cmd, message: msg, permissions: botMissing});
             }
 
             if(cmd.ownerOnly && (msg.author.id != msg.client.author)) 
-                return this.emit('ownerCommandTried', cmd, msg.author); //if the cmd is owner only and the user isnt the owner
+                return this.emit('ownerCommandTried', cmd, msg); //if the cmd is owner only and the user isnt the owner
                 
             if( msg.guild && ((msg.channel.disabledCommands && msg.channel.disabledCommands.find(command => cmd.name == command)) 
                 || (msg.guild.disabledCommands && msg.guild.disabledCommands.find(command => command == cmd.name))))
-                    return this.emit("disabledCommandTried", cmd, msg.author);
+                    return this.emit("disabledCommandTried", cmd, msg);
                 
             if(cmd.reqUser) //set the user variable if the command needs the user.
                 user = this.findUser(msg);
@@ -73,9 +73,9 @@ class DBFClient extends Client{
                 args = this.getArgs(msg);
             try{
                 cmd.run({"msg": msg, "user": user, "args": args}); //run the command 
-                this.emit("commandRun", cmd, msg.author);
+                this.emit("commandRun", cmd, msg);
             }catch(err){
-                this.emit("commandError", {command: cmd, guild: msg.guild, messageContent: msg.content, user: msg.author, error: err});
+                this.emit("commandError", {command: cmd, message: msg, error: err});
             }
         });
 
