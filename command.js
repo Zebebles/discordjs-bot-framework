@@ -7,12 +7,11 @@ class Command{
             throw Error("Must define command description.");
         this.name = obj.name;
         this.ownerOnly = obj.ownerOnly;
-        this.group = obj.group ? obj.group : "ungrouped";
-        this.triggers = obj.triggers;
+        this.group = obj.group ? obj.group : "all";
+        this.triggers = obj.triggers ? obj.triggers : new Array();
         this.description = obj.description;
         this.example = obj.example ? obj.example : "";
         this.reqUser = obj.reqUser;
-        this.group = obj.group;
         this.reqArgs = obj.reqArgs;
         this.guildOnly = obj.guildOnly;
         this.reqUserPerms = obj.reqUserPerms ? obj.reqUserPerms : new Array(); 
