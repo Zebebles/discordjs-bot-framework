@@ -28,8 +28,6 @@ class DBFClient extends Client{
             let user, args, command;
             if(msg.guild && !msg.channel.permissionsFor(msg.guild.me).has("SEND_MESSAGES")) //If the bot doesn't have perms to talk in the channel.
                 return;
-            if(msg.author.bot) //dont respond to other bots
-                return;
 
             var prefixRegex = (this.mentionsTrigger) ? new RegExp(prefix.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g,"\\$&") + '|<@(!)?' + this.user.id + '>', 'g') : new RegExp(prefix.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g,"\\$&"), 'g');
             
@@ -50,25 +48,23 @@ class DBFClient extends Client{
             if(!cmd) //if the command doesn't exist.
                 return;
             if(cmd.guildOnly && msg.channel.type == "dm")
-                return msg.channel.send("The command `" + cmd.name + "` can't be used in private messages.");
+                return this.emit('notGuild', {command: cmd, user: msg.author});
             
-            if((cmd.reqUserPerms.length != 0 || cmd.reqBotPerms != 0) && msg.guild && !msg.guild.me.hasPermission("ADMINISTRATOR")){
+            if((cmd.reqUserPerms.length != 0 || cmd.reqBotPerms != 0) && msg.guild){
                 let userMissing = msg.member.missingPermissions(cmd.reqUserPerms);
                 if(userMissing && userMissing.length != 0)
-                    return msg.channel.send("You need permission `" + userMissing[0] + "` to do that.");
+                    return this.emit('missingPermissions', {bot: false, command: cmd, user: msg.author, guild: msg.guild, permissions: userMissing});
                 let botMissing = msg.guild.me.missingPermissions(cmd.reqBotPerms);
                 if(botMissing && botMissing.length != 0)
-                    return msg.channel.send("I need permission `" + botMissing[0] + "` to be able to do that.");
+                    return this.emit('missingPermissions', {bot: true, command: cmd, user: msg.author, guild: msg.guild, permissions: botMissing});
             }
 
-            if(cmd.OwnerOnly && (msg.author.id != msg.client.Author)) return; //if the cmd is owner only and the user isnt the owner
-            
-            if(cmd.GuildOnly && msg.channel.type != "text")  //if the commands guild only and the channel isn't a text ch
-                return msg.channel.send("The command `" + cmd.name + "` can't be used in private chats.");
+            if(cmd.ownerOnly && (msg.author.id != msg.client.author)) 
+                return this.emit('ownerCommandTried', cmd, msg.author); //if the cmd is owner only and the user isnt the owner
                 
             if( msg.guild && ((msg.channel.disabledCommands && msg.channel.disabledCommands.find(command => cmd.name == command)) 
                 || (msg.guild.disabledCommands && msg.guild.disabledCommands.find(command => command == cmd.name))))
-                    return
+                    return this.emit("disabledCommandTried", cmd, msg.author);
                 
             if(cmd.reqUser) //set the user variable if the command needs the user.
                 user = this.findUser(msg);
@@ -77,8 +73,9 @@ class DBFClient extends Client{
                 args = this.getArgs(msg);
             try{
                 cmd.run({"msg": msg, "user": user, "args": args}); //run the command 
+                this.emit("commandRun", cmd, msg.author);
             }catch(err){
-                console.log("Error executing command " + cmd.name + ".\nMessage that triggered: " + msg.content + "\n"+err);
+                this.emit("commandError", {command: cmd, guild: msg.guild, messageContent: msg.content, user: msg.author, error: err});
             }
         });
 
