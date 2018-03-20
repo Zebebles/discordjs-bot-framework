@@ -50,7 +50,7 @@ class DBFClient extends Client{
             if(cmd.guildOnly && msg.channel.type == "dm")
                 return msg.channel.send("The command `" + cmd.name + "` can't be used in private messages.");
             
-            if((cmd.reqUserPerms.length != 0 || cmd.reqBotPerms != 0) && msg.guild){
+            if((cmd.reqUserPerms.length != 0 || cmd.reqBotPerms != 0) && msg.guild && !msg.guild.me.hasPermission("ADMINISTRATOR")){
                 let userMissing = msg.member.missingPermissions(cmd.reqUserPerms);
                 if(userMissing && userMissing.length != 0)
                     return msg.channel.send("You need permission `" + userMissing[0] + "` to do that.");
