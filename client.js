@@ -28,6 +28,8 @@ class DBFClient extends Client{
             let user, args, command;
             if(msg.guild && !msg.channel.permissionsFor(msg.guild.me).has("SEND_MESSAGES")) //If the bot doesn't have perms to talk in the channel.
                 return;
+            if(msg.author.bot) //dont respond to other bots
+                return;
 
             var prefixRegex = (this.mentionsTrigger) ? new RegExp(prefix.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g,"\\$&") + '|<@(!)?' + this.user.id + '>', 'g') : new RegExp(prefix.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g,"\\$&"), 'g');
             
