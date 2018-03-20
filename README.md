@@ -2,7 +2,6 @@
 
 ##About
 A lightweight, easy to use framework for Discord bots that makes creating a [Discord.js](https://www.npmjs.com/package/discord.js) as easy as 1 2 3 (cliché, I know).
-discordjs-bot-framework
 
 ##Installation:
 `npm install discordjs-bot-framework`
