@@ -56,27 +56,28 @@ module.exports = class Hello extends DBF.Command{
 
 
 ##Client class
+
 ***IMPORTANT: all of the properties, properties, and events attatched to client can be called from anything that links to client in the discord.js library.  i.e. msg.client.getArgs(msg) or msg.client.on('commandRun')***
 
 ###Methods
 
-`Client.getArgs(message)` : gets any arguments after the command in a message.[string] *note: if your bot is using MentionsTrigger, you'll definately want to use this*
+`Client.getArgs(message)` : gets any arguments after the command in a message.`[string]` *note: if your bot is using MentionsTrigger, you'll definately want to use this*
 
-`Client.findUser(message)` : finds a user based on an @mention or a username.[Discord.user] *note: if your bot is using MentionsTrigger, you'll definately want to use this*
+`Client.findUser(message)` : finds a user based on an @mention or a username.`[Discord.user]` *note: if your bot is using MentionsTrigger, you'll definately want to use this*
 
-`Client.reloadCommands(command_name or group)` : reloads a command or a group of commands.  Any changes to the command will be applied [int - number of commands reloaded]? or null
+`Client.reloadCommands(command_name or group)` : reloads a command or a group of commands.  Any changes to the command will be applied `[int - number of commands reloaded]? or null`
 
 ###Properties
 
-`Client.prefix`: The bots prefix. [string]
+`Client.prefix`: The bots prefix. `[string]`
 
-`Client.author` : The authors discord ID, string. [snowflake]
+`Client.author` : The authors discord ID, string. `[snowflake]`
 
-`Client.commandsDir` : The commands directory, string. [string]
+`Client.commandsDir` : The commands directory, string. `[string]`
 
-`Client.commands` : gets an array of commands from the client, array of Commands. [Array(command)]
+`Client.commands` : gets an array of commands from the client, array of Commands. `[Array(command)]`
 
-`Client.mentionsTrigger` : if @mentioning the client, followed by a command will trigger the command. [bool]
+`Client.mentionsTrigger` : if @mentioning the client, followed by a command will trigger the command. `[bool]`
 
 ###Events
 
@@ -88,21 +89,21 @@ Client.on('commandRun', function(command, message) {
 ```
 
 `commandError` : This event is emitted whenever a command has an error.
-```Javascript
+```javascript
 Client.on('commandError', function(data) {
     console.log("Error running command " + data.command.name + " in " + data.message.guild.name + "\n" + data.error);
 });
 ```
 
 `notGuild` : This event is emitted whenever anyone tries to run a guildOnly command in a dm channel.
-```Javascript
+```javascript
 Client.on('notGuild', function(command, message) {
     console.log("guildOnly command " + command.name + " tried in dm channel with " + message.author.username);
 });
 ```
 
 `missingPermissions` : This event is emitted whenever a command is run and either the bot or the user is missing any of the permissions specified by you.
-```Javascript
+```javascript
 Client.on('missingPermissions', function(data){
     if(data.bot)
     {
@@ -116,7 +117,7 @@ Client.on('missingPermissions', function(data){
 ```
 
 `ownerCommandTried` : This event is emitted whenever anyone who isn't the author tries to use an ownerOnly command.
-```Javascript
+```javascript
 Client.on('ownerCommandTried', function(command, message){
     message.channel.send("`" + command.name + "` is only avaliable for the bot owner.");
 });
@@ -126,33 +127,33 @@ Client.on('ownerCommandTried', function(command, message){
 
 ###Methods
 
-`Command.run(message)` : runs the command (this is done automatically by the framework when one of the triggers is sent in a message. [void]
+`Command.run(message)` : runs the command (this is done automatically by the framework when one of the triggers is sent in a message. `[void]`
 
-`Command.areYou(string)` : check if the command's name or triggers match the string, returns a boolean. [bool]
+`Command.areYou(string)` : check if the command's name or triggers match the string, returns a boolean. `[bool]`
 
 ###Properties
 
-`Command.name`: name of the command. [string]
+`Command.name`: name of the command. `[string]`
 
-`Command.triggers` : an array of the commands triggers. [Array(string)]
+`Command.triggers` : an array of the commands triggers. `[Array(string)]`
 
-`Command.ownerOnly` : if the command is OwnerOnly. [bool].
+`Command.ownerOnly` : if the command is OwnerOnly. `[bool]`
 
-`Command.guildOnly` : If the command is GuildOnly. [bool]
+`Command.guildOnly` : If the command is GuildOnly. `[bool]`
 
-`Command.group` : The group of the command, string. [string]
+`Command.group` : The group of the command, string. `[string]`
 
-`Command.description` : The commands description. [string]
+`Command.description` : The commands description. `[string]`
 
-`Command.example` : The commands example. [string]
+`Command.example` : The commands example. `[string]`
 
-`Command.reqArgs` : Whether or not the command will include arguments (any string following the command name after the message that triggered it) in the run parameters. [bool]
+`Command.reqArgs` : Whether or not the command will include arguments (any string following the command name after the message that triggered it) in the run parameters. `[bool]`
 
-`Command.reqUser` : Whether or not the command will look for a user to include in the run parameters. [bool]
+`Command.reqUser` : Whether or not the command will look for a user to include in the run parameters. `[bool]`
 
-`Command.reqUserPerms` : The permissions a user should have to execute a command. [Array(string)]
+`Command.reqUserPerms` : The permissions a user should have to execute a command. `[Array(string)]`
 
-`Command.reqBotPerms` : The permissions required for the bot to run the command.  [Array(string)]
+`Command.reqBotPerms` : The permissions required for the bot to run the command.  `[Array(string)]`
 
  
 ##Credits:
