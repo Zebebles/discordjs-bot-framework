@@ -114,6 +114,7 @@ class DBFClient extends Client{
             CMD.filename = cmd.filename;
             this.commands[this.commands.indexOf(cmd)] = CMD;
         });
+        this.emit('commandsReloaded');
         return toReload.length;
         
     }
