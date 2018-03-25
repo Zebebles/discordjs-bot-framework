@@ -26,7 +26,7 @@ class DBFClient extends Client{
         this.on("message", msg => {
             let prefix = (msg.guild && msg.guild.prefix) ? msg.guild.prefix : this.prefix;
             let user, args, command;
-            if(msg.guild && !msg.channel.permissionsFor(msg.guild.me).has("SEND_MESSAGES")) //If the bot doesn't have perms to talk in the channel.
+            if(msg.guild && !msg.channel.permissionsFor(msg.guild.me).has("SEND_MESSAGES") || msg.author.bot) //If the bot doesn't have perms to talk in the channel.
                 return;
 
             var prefixRegex = (this.mentionsTrigger) ? new RegExp(prefix.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g,"\\$&") + '|<@(!)?' + this.user.id + '>', 'g') : new RegExp(prefix.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g,"\\$&"), 'g');
