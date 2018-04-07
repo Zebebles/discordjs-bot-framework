@@ -85,6 +85,12 @@ class DBFClient extends Client{
     }
 
     login(){
+        this.loadCommands();
+        super.login(this.token+"");
+    }
+
+    loadCommands()
+    {
         fs.readdir(this.commandsdir, (err, files) => {
             if(err) return console.log(err);
             files.forEach(file => {
@@ -96,8 +102,6 @@ class DBFClient extends Client{
                 }
             });
         });
-
-        super.login(this.token+"");
     }
 
     reloadCommands(identifier){
@@ -107,16 +111,11 @@ class DBFClient extends Client{
         if(!toReload[0])
             return;
         
-        toReload.forEach(cmd => {
-            delete require.cache[require.resolve(cmd.filename)];
-            const Command = require(cmd.filename);
-            const CMD = new Command();
-            CMD.filename = cmd.filename;
-            this.commands[this.commands.indexOf(cmd)] = CMD;
-        });
-        this.emit('commandsReloaded');
-        return toReload.length;
+        toReload.forEach(cmd => delete require.cache[require.resolve(cmd.filename)]);
+        this.loadCommands();
         
+        this.emit('commandsReloaded');
+        return toReload.length; 
     }
 
     getArgs(msg){
