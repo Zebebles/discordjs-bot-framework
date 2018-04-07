@@ -112,6 +112,7 @@ class DBFClient extends Client{
             return;
         
         toReload.forEach(cmd => delete require.cache[require.resolve(cmd.filename)]);
+        this.commands = [];
         this.loadCommands();
         
         this.emit('commandsReloaded');
