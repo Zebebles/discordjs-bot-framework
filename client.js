@@ -109,7 +109,7 @@ class DBFClient extends Client{
             ?   this.commands.filter(cmd => cmd.group.toLowerCase().trim() == identifier.trim().toLowerCase() || cmd.areYou(identifier.trim().toLowerCase())) 
             :   this.commands;
         if(!toReload[0])
-            return;
+            return 0;
         
         toReload.forEach(cmd => delete require.cache[require.resolve(cmd.filename)]);
         this.commands = [];
