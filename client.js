@@ -52,10 +52,10 @@ class DBFClient extends Client{
             
             if((cmd.reqUserPerms.length != 0 || cmd.reqBotPerms.length != 0) && msg.guild){
                 let userMissing = msg.member.missingPermissions(cmd.reqUserPerms);
-                if(userMissing && userMissing.length != 0 && !msg.member.hasPermission("ADMINISTRATOR") && msg.guild.ownerID != msg.author.id)
+                if(userMissing && userMissing.length != 0 && !msg.member.permissions.has("ADMINISTRATOR") && msg.guild.ownerID != msg.author.id)
                     return this.emit('missingPermissions', {bot: false, command: cmd, message: msg, permissions: userMissing});
                 let botMissing = msg.guild.me.missingPermissions(cmd.reqBotPerms);
-                if(botMissing && botMissing.length != 0 && !msg.guild.me.hasPermission("ADMINISTRATOR"))
+                if(botMissing && botMissing.length != 0 && !msg.guild.me.permissions.has("ADMINISTRATOR"))
                     return this.emit('missingPermissions', {bot: true, command: cmd, message: msg, permissions: botMissing});
             }
 
